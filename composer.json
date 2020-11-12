@@ -10,7 +10,7 @@
     }
   },
   "extra": {
-    "laravvel": {
+    "laravel": {
       "providers": [
         "Vinlon\\Laravel\\SqlLogger\\SqlLoggerProvider"
       ]
