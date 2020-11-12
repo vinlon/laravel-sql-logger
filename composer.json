@@ -1,5 +1,19 @@
 {
-    "require-dev": {
-        "laravel/framework": "7.*"
+  "name": "vinlon/laravel-sql-logger",
+  "description": "Log Sql Queries in Laravel framework",
+  "require-dev": {
+    "laravel/framework": "7.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Vinlon\\Laravel\\SqlLogger\\": "src/"
     }
+  },
+  "extra": {
+    "laravvel": {
+      "providers": [
+        "Vinlon\\Laravel\\SqlLogger\\SqlLoggerProvider"
+      ]
+    }
+  }
 }
