@@ -1,6 +1,7 @@
 {
   "name": "vinlon/laravel-sql-logger",
   "description": "Log Sql Queries in Laravel framework",
+  "license": "MIT",
   "require-dev": {
     "laravel/framework": "7.*"
   },
