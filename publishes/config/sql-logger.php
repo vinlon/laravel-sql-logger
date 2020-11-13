@@ -25,6 +25,6 @@ return [
     /**
      * Slow Query Log 使用的Log Channel
      */
-    'slow_query_log_channel' => env('SQL_LOGGER_ALL_QUERY_LOG_CHANNEL', null),
+    'slow_query_log_channel' => env('SQL_LOGGER_SLOW_QUERY_LOG_CHANNEL', null),
 
 ];
