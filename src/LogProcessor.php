@@ -87,7 +87,7 @@ class LogProcessor
             $tag,
             $query->time,
             $query->sql,
-            json_encode($query->bindings)
+            json_encode($query->bindings, JSON_UNESCAPED_UNICODE)
         );
     }
 }
