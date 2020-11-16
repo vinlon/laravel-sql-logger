@@ -43,7 +43,7 @@
     SQL_LOGGER_SLOW_QUERY_ENABLED=true
     ```
 
-    为SQL日志定义专门上的LOG CHANNEL, 在config/logging.php中增加如下配置
+    为SQL日志定义专门的LOG CHANNEL, 在config/logging.php中增加如下配置
 
     ```
     'sql-logger' => [
@@ -67,7 +67,7 @@
     SQL_LOGGER_SLOW_QUERY_LOG_CHANNEL=slow-sql-logger
     ```
 
-    最后，关于SLOW_QUERY_THRESHOLD的定义，可以根据业务的数据量及对效率的敏感程度决定。
+    最后，关于SLOW_QUERY_THRESHOLD的定义，可以根据业务数据量及对效率的敏感程度决定。
 
     ```
     SQL_LOGGER_SLOW_QUERY_THRESHOLD=1000
