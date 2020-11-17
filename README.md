@@ -51,20 +51,14 @@
         'path' => storage_path('logs/sql.log'),
         'level' => 'debug',
         'days' => 14,
-    ],
-    'slow-sql-logger' => [
-        'driver' => 'daily',
-        'path' => storage_path('logs/slow-sql.log'),
-        'level' => 'debug',
-        'days' => 14,
-    ],
+    ]
     ```
 
     并修改环境变量, 这样，ALL QUERY和SLOW QUERY将会分别输出到不同的日志文件中。
 
     ```
     SQL_LOGGER_ALL_QUERY_LOG_CHANNEL=sql-logger
-    SQL_LOGGER_SLOW_QUERY_LOG_CHANNEL=slow-sql-logger
+    SQL_LOGGER_SLOW_QUERY_LOG_CHANNEL=sql-logger
     ```
 
     最后，关于SLOW_QUERY_THRESHOLD的定义，可以根据业务数据量及对效率的敏感程度决定。
