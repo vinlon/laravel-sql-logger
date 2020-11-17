@@ -6,6 +6,7 @@ namespace Vinlon\Laravel\SqlLogger;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class LogProcessor
 {
@@ -82,12 +83,18 @@ class LogProcessor
      */
     private function getLineMessage(QueryExecuted $query, $tag)
     {
+        $bindings = $query->bindings;
+        $bindingsWithQuote = array_map(function ($item) {
+            if (!is_numeric($item)) {
+                return sprintf("'%s'", $item);
+            }
+            return $item;
+        }, $bindings);
         return sprintf(
-            '[%s] %sms, %s, %s',
+            '[%s][%s ms] %s',
             $tag,
             $query->time,
-            $query->sql,
-            json_encode($query->bindings, JSON_UNESCAPED_UNICODE)
+            Str::replaceArray('?', $bindingsWithQuote, $query->sql)
         );
     }
 }

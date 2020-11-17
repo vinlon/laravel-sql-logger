@@ -80,3 +80,4 @@
 
 # 参考 
 https://github.com/mnabialek/laravel-sql-logger
+https://github.com/overtrue/laravel-query-logger
