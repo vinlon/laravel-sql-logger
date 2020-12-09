@@ -7,6 +7,7 @@ namespace Vinlon\Laravel\SqlLogger;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use League\Flysystem\Exception;
 
 class LogProcessor
 {
@@ -31,14 +32,19 @@ class LogProcessor
      */
     public function process(QueryExecuted $query)
     {
-        if ($this->isSlowQuery($query)) {
-            $this->writeSlowQueryLog($query);
-            if (!$this->config->usingSameChannel()) {
+        try {
+            if ($this->isSlowQuery($query)) {
+                $this->writeSlowQueryLog($query);
+                if (!$this->config->usingSameChannel()) {
+                    $this->writeAllQueryLog($query);
+                }
+            } else {
                 $this->writeAllQueryLog($query);
             }
-        } else {
-            $this->writeAllQueryLog($query);
+        } catch (\Exception $e) {
+            report($e);
         }
+
     }
 
     /**
@@ -83,18 +89,12 @@ class LogProcessor
      */
     private function getLineMessage(QueryExecuted $query, $tag)
     {
-        $bindings = $query->bindings;
-        $bindingsWithQuote = array_map(function ($item) {
-            if (!is_numeric($item)) {
-                return sprintf("'%s'", $item);
-            }
-            return $item;
-        }, $bindings);
+        $sqlFormatter = new SqlFormatter($query->sql, $query->bindings);
         return sprintf(
             '[%s][%s ms] %s',
             $tag,
             $query->time,
-            Str::replaceArray('?', $bindingsWithQuote, $query->sql)
+            $sqlFormatter->format()
         );
     }
 }
