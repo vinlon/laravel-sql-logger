@@ -32,19 +32,22 @@
 
 4. 配置建议
 
-    在生产环境关闭 ALL QUERY LOG
-
     ```
-    SQL_LOGGER_ALL_QUERY_ENABLED=false
-    ```
+    # ALL QUERY LOG 只在 debug 模式下开启
+    SQL_LOGGER_ALL_QUERY_ENABLED="${APP_DEBUG}"
 
-    SLOW QUERY LOG可以视情况而定，如果团队没有专门的DBA对数据库运行情况进行监控，可以考虑在生产环境输出SLOW QUERY LOG
-
-    ```
+    # SLOW QUERY LOG 可以视情况而定，如果团队没有专门的DBA对数据库运行情况进行监控，可以考虑在生产环境开启
     SQL_LOGGER_SLOW_QUERY_ENABLED=true
+
+    # 根据业务数据量及对SQL执行效率的敏感程度决定
+    SQL_LOGGER_SLOW_QUERY_THRESHOLD=1000
+
+    # 为 SQL 日志定义专门的 LOG CHANNEL
+    SQL_LOGGER_ALL_QUERY_LOG_CHANNEL=sql-logger
+    SQL_LOGGER_SLOW_QUERY_LOG_CHANNEL=slow-sql-logger
     ```
 
-    为SQL日志定义专门的LOG CHANNEL, 在config/logging.php中增加如下配置
+    Log Channel示例 (config/logging.php)
 
     ```
     'sql-logger' => [
@@ -53,19 +56,6 @@
         'level' => 'debug',
         'days' => 14,
     ]
-    ```
-
-    并修改环境变量, 这样，ALL QUERY和SLOW QUERY将会分别输出到不同的日志文件中。
-
-    ```
-    SQL_LOGGER_ALL_QUERY_LOG_CHANNEL=sql-logger
-    SQL_LOGGER_SLOW_QUERY_LOG_CHANNEL=sql-logger
-    ```
-
-    最后，关于SLOW_QUERY_THRESHOLD的定义，可以根据业务数据量及对效率的敏感程度决定。
-
-    ```
-    SQL_LOGGER_SLOW_QUERY_THRESHOLD=1000
     ```
 
 # TODO
