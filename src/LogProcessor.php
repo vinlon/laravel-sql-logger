@@ -1,13 +1,9 @@
 <?php
 
-
 namespace Vinlon\Laravel\SqlLogger;
-
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use League\Flysystem\Exception;
 
 class LogProcessor
 {
@@ -18,17 +14,14 @@ class LogProcessor
 
     /**
      * LogProcessor constructor.
-     * @param Config $config
      */
     public function __construct(Config $config)
     {
         $this->config = $config;
     }
 
-
     /**
-     * 记录SQL Query Log
-     * @param QueryExecuted $query
+     * 记录SQL Query Log.
      */
     public function process(QueryExecuted $query)
     {
@@ -44,12 +37,11 @@ class LogProcessor
         } catch (\Exception $e) {
             report($e);
         }
-
     }
 
     /**
-     * 判断是否是慢查询
-     * @param QueryExecuted $query
+     * 判断是否是慢查询.
+     *
      * @return bool
      */
     private function isSlowQuery(QueryExecuted $query)
@@ -58,38 +50,40 @@ class LogProcessor
     }
 
     /**
-     * 记录 Slow Query Log
-     * @param QueryExecuted $query
+     * 记录 Slow Query Log.
      */
     private function writeSlowQueryLog(QueryExecuted $query)
     {
         if ($this->config->slowQueryEnabled()) {
             Log::channel($this->config->slowQueryLogChannel())
-                ->warning($this->getLineMessage($query, 'SLOW_QUERY'));
+                ->warning($this->getLineMessage($query, 'SLOW_QUERY'))
+            ;
         }
     }
 
     /**
-     * 记录 All Query Log
-     * @param QueryExecuted $query
+     * 记录 All Query Log.
      */
     private function writeAllQueryLog(QueryExecuted $query)
     {
         if ($this->config->allQueryEnabled()) {
             Log::channel($this->config->allQueryLogChannel())
-                ->debug($this->getLineMessage($query, 'QUERY'));
+                ->debug($this->getLineMessage($query, 'QUERY'))
+            ;
         }
     }
 
     /**
-     * 拼接日志信息
-     * @param QueryExecuted $query
+     * 拼接日志信息.
+     *
      * @param $tag
+     *
      * @return string
      */
     private function getLineMessage(QueryExecuted $query, $tag)
     {
         $sqlFormatter = new SqlFormatter($query->sql, $query->bindings);
+
         return sprintf(
             '[%s][%s ms] %s',
             $tag,

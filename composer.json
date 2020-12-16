@@ -15,6 +15,30 @@
       "providers": [
         "Vinlon\\Laravel\\SqlLogger\\SqlLoggerProvider"
       ]
-    }
+    },
+    "hooks": {
+      "pre-push": [
+        "composer check-style"
+      ],
+      "pre-commit": [
+        "composer check-style"
+      ]
+    } 
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.17",
+    "brainmaestro/composer-git-hooks": "^2.8"
+  },
+  "scripts":{
+    "post-install-cmd": [
+      "cghooks add --ignore-lock",
+      "cghooks update"
+    ],
+    "post-update-cmd": [
+      "cghooks update"
+    ],
+    "cghooks": "vendor/bin/cghooks",
+    "check-style": "vendor/bin/php-cs-fixer fix --using-cache=no --diff --dry-run --ansi",
+    "fix-style": "vendor/bin/php-cs-fixer fix --using-cache=no --ansi"
   }
 }

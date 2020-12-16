@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Vinlon\Laravel\SqlLogger;
-
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
@@ -16,7 +14,6 @@ class SqlLoggerProvider extends ServiceProvider
 
     /**
      * SqlLoggerProvider constructor.
-     * @param Application $app
      */
     public function __construct(Application $app)
     {
@@ -51,13 +48,16 @@ class SqlLoggerProvider extends ServiceProvider
     }
 
     /**
-     * 如果All Query Log和Slow Query Log都没有开启，则不做任何事情
-     * @return bool
+     * 如果All Query Log和Slow Query Log都没有开启，则不做任何事情.
+     *
      * @throws BindingResolutionException
+     *
+     * @return bool
      */
     private function nothingToDo()
     {
         $config = $this->app->make(Config::class);
+
         return !$config->allQueryEnabled() && !$config->slowQueryEnabled();
     }
 }

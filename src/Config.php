@@ -1,22 +1,10 @@
 <?php
 
-
 namespace Vinlon\Laravel\SqlLogger;
-
 
 class Config
 {
     const CONFIG_NAME = 'sql-logger';
-
-    private function getConfig($key, $defaultValue)
-    {
-        $value = config(self::CONFIG_NAME . '.' . $key, $defaultValue);
-        if (trim($value) === '') {
-            return $defaultValue;
-        } else {
-            return $value;
-        }
-    }
 
     public function allQueryEnabled()
     {
@@ -46,5 +34,15 @@ class Config
     public function usingSameChannel()
     {
         return $this->allQueryLogChannel() == $this->slowQueryLogChannel();
+    }
+
+    private function getConfig($key, $defaultValue)
+    {
+        $value = config(self::CONFIG_NAME . '.' . $key, $defaultValue);
+        if ('' === trim($value)) {
+            return $defaultValue;
+        }
+
+        return $value;
     }
 }

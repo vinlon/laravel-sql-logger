@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Vinlon\Laravel\SqlLogger;
-
 
 use DateTimeInterface;
 
 /**
  * Class SqlFormatter
- * Borrow from https://github.com/mnabialek/laravel-sql-logger/
+ * Borrow from https://github.com/mnabialek/laravel-sql-logger/.
  */
 class SqlFormatter
 {
@@ -24,8 +22,6 @@ class SqlFormatter
 
     /**
      * SqlFormatter constructor.
-     * @param string $sql
-     * @param array $bindings
      */
     public function __construct(string $sql, array $bindings)
     {
@@ -45,6 +41,7 @@ class SqlFormatter
             $regex = is_numeric($key) ? $this->getGeneralRegex() : $this->getNamedParameterRegex($key);
             $sql = preg_replace($regex, $this->getDisplayValue($binding), $sql, 1);
         }
+
         return $sql;
     }
 
@@ -57,35 +54,32 @@ class SqlFormatter
      */
     private function getDisplayValue($value)
     {
-        if ($value === null) {
+        if (null === $value) {
             return 'null';
         }
         if (is_bool($value)) {
-            return (int)$value;
+            return (int) $value;
         }
+
         return is_numeric($value) ? $value : "'" . $value . "'";
     }
 
-
     /**
      * Get regex to be used for named parameter with given name.
-     *
-     * @param string $name
      *
      * @return string
      */
     private function getNamedParameterRegex(string $name)
     {
-        if (mb_substr($name, 0, 1) == ':') {
+        if (':' == mb_substr($name, 0, 1)) {
             $name = mb_substr($name, 1);
         }
+
         return $this->wrapRegex($this->notInsideQuotes('\:' . preg_quote($name), false));
     }
 
     /**
      * Format bindings values.
-     *
-     * @param array $bindings
      *
      * @return array
      */
@@ -93,11 +87,12 @@ class SqlFormatter
     {
         foreach ($bindings as $key => $binding) {
             if ($binding instanceof DateTimeInterface) {
-                 $bindings[$key] = $binding->format('Y-m-d H:i:s');
+                $bindings[$key] = $binding->format('Y-m-d H:i:s');
             } elseif (is_string($binding)) {
                 $bindings[$key] = str_replace("'", "\\'", $binding);
             }
         }
+
         return $bindings;
     }
 
@@ -118,8 +113,6 @@ class SqlFormatter
     /**
      * Wrap regex.
      *
-     * @param string $regex
-     *
      * @return string
      */
     private function wrapRegex(string $regex)
@@ -130,7 +123,6 @@ class SqlFormatter
     /**
      * Create partial regex to find given text not inside quotes.
      *
-     * @param string $string
      * @param bool $quote
      *
      * @return string
@@ -140,6 +132,7 @@ class SqlFormatter
         if ($quote) {
             $string = preg_quote($string);
         }
+
         return
             // double quotes - ignore "" and everything inside quotes for example " abc \"err "
             '(?:""|"(?:[^"]|\\")*?[^\\\]")(*SKIP)(*F)|' . $string .
@@ -148,5 +141,3 @@ class SqlFormatter
             '(?:\\\'\\\'|\'(?:[^\']|\\\')*?[^\\\]\')(*SKIP)(*F)|' . $string;
     }
 }
-
-
