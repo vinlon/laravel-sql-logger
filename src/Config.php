@@ -10,7 +10,12 @@ class Config
 
     private function getConfig($key, $defaultValue)
     {
-        return config(self::CONFIG_NAME . '.' . $key, $defaultValue);
+        $value = config(self::CONFIG_NAME . '.' . $key, $defaultValue);
+        if (trim($value) === '') {
+            return $defaultValue;
+        } else {
+            return $value;
+        }
     }
 
     public function allQueryEnabled()
