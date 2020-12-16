@@ -2,7 +2,8 @@
 
 # 版本支持
 
-目前只对 laravel 7.* 版本做了测试
+- laravel 6.*
+- laravel 7.*
 
 # 使用方法
 
