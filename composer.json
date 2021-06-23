@@ -3,7 +3,7 @@
   "description": "Log Sql Queries in Laravel framework",
   "license": "MIT",
   "require": {
-    "laravel/framework": "~6.0||~7.0"
+    "laravel/framework": "~6.0||~7.0||~8.0"
   },
   "autoload": {
     "psr-4": {
